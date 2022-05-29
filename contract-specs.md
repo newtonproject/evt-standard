@@ -109,6 +109,7 @@ interface EVTMetadata {
 
     function symbol() external view returns (string _symbol);
     
+    // on-chain tokenURI
     function tokenURI(uint256 _tokenId) external view returns (string memory);
 		
     function from() external view returns (string);
