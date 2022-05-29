@@ -1,3 +1,3 @@
-# EVT-docs
+# Newton EVT Standard
 
-Ideas, draft, discussion for EVT incubation
+Ideas, draft, discussion, utility tools, library source code for EVT incubation

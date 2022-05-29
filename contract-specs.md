@@ -1,15 +1,15 @@
 ---
 eip: X
-title: Encryption and Evolution Token Standard
-author: NewChain Newton
+title: Encryption and Evolution Token Proposal
+author: Newton Core Team
 type: Standards Track
-category: ERC
+category: NRC
 status: Draft
 created: 2022-05-18
 discussions-to: https://github.com/newtonproject/NEPs/issues/x
 ---
 
-# EVT Standard
+# EVT Proposal
 
 
 
@@ -19,50 +19,41 @@ discussions-to: https://github.com/newtonproject/NEPs/issues/x
 
 ## Abstract
 
-近年来，以太坊上的ERC-721, ERC-1155等标准极大推动了NFT和区块链产业的发展。
+In recent years,  NFT based applications is blooming by acceleration of ERC-721 standard.
 
-不过，当前的标准也存在如下的严重不足：
+But current standards is still limited to few applicable fields such as digital arts because of the aspects below.
 
-* NFT中的图片、视频、音频等数字媒体资源都是完全公开的，没有对应的隐私和版权保护设计；
-* 在ERC721和ERC1155标准中，NFT的metadata是不可变成，严重限制了应用的创新；
+* Privacy and copyright protection.
 
-EVT(Encryption and Variable Token)是可加密、可变化的代币标准， a new kind of token。
+  Because image, audio, video in NFT is totally opening, some important applications such as digital entertainment, social network, etc. , will be not emerging. 
 
-EVT为元宇宙而生。
+* Variable Property
 
-NFT是EVT的子集。
+  Normally the metadata of NFT is  invariable. It impede the inovation based on blockchain.
 
-举例：
+* Industry metadata
 
-* 元宇宙里面的砖要有一个标准；
+We propose a new token standard EVT(Encrypted Variable Token) which support the development of encrypted and variable decentralized applications.
 
+In EVT, we category metadata as two parts: static property and variable property.
 
+Common variable properties is as follows:
 
-不可变属性：
+* time-based property
+* position-based property
+* function-based property
+* oracle-based property
+* infusion-based property
 
-* symbol
-* name
+Another importan feature of EVT is the traceability. It means that each changes of EVT will be recorded.
 
-
-
-可变属性包括：
-
-* 基于时间
-* 基于位置
-* 基于功能
-* 基于Oracle
-* 组合
-* ODI
-
-
-
-TODO：可记录属性的状态。
+By the way, we think only standardization of interface is not enough. So we also propose the industry standard of metadata which is on [metadata specs](metadata-specs.md).
 
 
 
 
 ## Motivation
-本文档中涉及的接口标准用于钱包、NFT Marketplace、Metaverse中EVT代币互操作。
+This document aims to guide the EVT's integration and interoperationality with wallet, marketplace, metaverse.
 
 
 
@@ -76,47 +67,40 @@ TODO：可记录属性的状态。
 
 ## Specification
 
+EVT will inherit the interfaces of NRC7.
 
-
-**NewInfo schemes**
-
-```bash
-newinfo://[version]@[Random Token ID]
-```
-
-For example, `newinfo://v1@123...` .
-
-IPFS://Qxxx
+The current implementation of EVT is based on solidity programming language. In Solidity, serialization and deserialization is not built-in. So in  implementation of EVT, protobuf3 is used for the serialization and deserialization of variable properties, 
 
 
 
 **EVT Interfaces**
 
-```solidity
-interface EVT /* is NRC7 */{
-	function setDynamicProperty(uint256 _tokenId, bytes32 _propertyID, string _propertyValue) external payable;
-	function getDynamicProperty(uint256 _tokenId, bytes32 _propertyID) external view returns (string);
-    function getStaticProperty(uint256 _tokenId, bytes32 _propertyID) external view returns (string);
-    function tokenURI(uint256 _tokenId) external view returns (string);
-    function updateTokenURI(uint256 _tokenId, string uri) external;
-	function supportsProperty(bytes32 _propertyID) external view returns (bool);
-}
 
-interface EVTPolicy {
-	function addRole(uint256 _tokenId, bytes32 _propertyID, address _owner) external;
-	function removeRole(uint256 _tokenId, bytes32 _propertyID, address _owner) external;
-	function isAuth(uint256 _tokenId, bytes32 _propertyID, address _owner) external view returns (bool);
+
+```solidity
+interface EVT is NRC7 {
+
+	function setDynamicProperty(uint256 _tokenId, bytes32 _propertyID, bytes _propertyValue) external payable;
+	
+	function setDynamicProperties(uint256 _tokenId, bytes _message) external payable;
+	
+	function getProperty(uint256 _tokenId, bytes32 _propertyID) external view returns (bytes);
+
+  function getProperties(uint256 _tokenId) external view returns (bytes);
+  
+	function supportsProperty(bytes32 _propertyID) external view returns (bool);
 }
 ```
 
-`_propertyID` is calculated by `bytes32(keccak256('propertyName(uint256)'));`. For example, `bytes32(keccak256('position(uint256)'))` .
+`_propertyID` is calculated by `bytes32(keccak256('propertyName'))`  . 
 
 
 
 The **metadata extension** is  for EVT smart contracts.
 
 ```solidity
-interface EVTMetadata /* is EVT */ {
+interface EVTMetadata {
+
     function name() external view returns (string _name);
     
 		function description() external view returns (string _description);
@@ -125,44 +109,13 @@ interface EVTMetadata /* is EVT */ {
 
     function symbol() external view returns (string _symbol);
     
-    function tokenURI(uint256 _tokenId) external view returns (string);
+    function tokenURI(uint256 _tokenId) external view returns (string memory);
 		
     function from() external view returns (string);
 
-    function tax() external view returns (uint);
-    
-    function dynamicProperties() external view returns (bytes32[]);
+    function tax() external view returns (uint);    
 }
 ```
-
-
-
-**Common Dynamic Property**
-
-| Property Name | Description |
-| ------------- | ----------- |
-| expired       |             |
-| position      |             |
-| lockContent   |             |
-| newinfoUri    |             |
-
-
-
-**ODI Dynamic Property**
-
-| Property Name | Description |
-| ------------- | ----------- |
-| avatar3D      |             |
-|               |             |
-|               |             |
-
-
-
-from dynamic to fixed
-
-ROM readonly, solid property
-
-RAM random access,  liquid property
 
 
 
@@ -170,16 +123,18 @@ RAM random access,  liquid property
 
 ```solidity
 contract ODI is EVT {
-	string internal _avatar3D;
+	string internal avatar3D;
 	
-	function avatar3D(uint256 _tokenId) internal view returns (string){
-		return _avatar3D;
+	function setDynamicProperty(uint256 _tokenId, bytes4 _propertyID, bytes _propertyValue) external payable {
+		...
+		avatar3D = string(_propertyValue);
+		...
+		}
 	}
 	
-	function setDynamicProperty(uint256 _tokenId, bytes4 _propertyID, string _propertyValue) external payable {
-		if (_propertyID == this.avatar3D.selector) {
-			_avatar3D = _propertyValue;
-		}
+	function tokenURI(uint256 tokenId) override public view returns (string memory) {
+  	string memory json = Base64.encode(bytes(string(abi.encodePacked('{"avatar3D": "...", ..."}'))));
+  	return string(abi.encodePacked('data:application/json;base64,', json));
 	}
 	
 	function ODI() public {}
@@ -200,80 +155,6 @@ TBD
 ## Backwards Compatibility
 
 TBD
-
-
-
-## Use Cases
-
-* 养一盆花
-
-  用例
-
-  * 点一下按钮，换一张图；
-
-  
-
-  callFunction('token_id', 'water', value)
-
-  ​	-> property: health
-
-  ​		
-
-* ODI
-
-  Original Digital Identity
-
-  sp1: 2D人物
-
-  sp2: 3D人物
-
-​		要求：技术手段实现一致性；不需要法律授权；
-
-​		
-
-​		setDynamicProperty('3davatar', 'uri')
-
-​		key metadata:
-
-​			people
-
-​			masterials
-
-​		
-
-​		以后，可以在metaverse、社交媒体使用。
-
-​		知道历史所有“头像”。
-
-​		
-
-
-
-* 电影
-
-​		过期时间
-
-​		
-
-* 人物角色
-
-​		cat from birth to mature, facial changes, has children, health status, emtion
-
-​		dynamic property
-
-​				age
-
-​				children
-
-​				health
-
-​		callFunction('feed', 'xxxx', value)
-
-​		callFunction('walk', 'xxxx', value)
-
-​		
-
-* 版权交易
 
 
 
