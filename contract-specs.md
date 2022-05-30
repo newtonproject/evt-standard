@@ -73,12 +73,12 @@ The current implementation of EVT is based on solidity programming language. In 
 
 
 
-**EVT Interfaces**
+**Variable Interfaces**
 
 
 
 ```solidity
-interface EVT is NRC7 {
+interface EVTVariable {
 
 	function setDynamicProperty(uint256 _tokenId, bytes32 _propertyID, bytes _propertyValue) external payable;
 	
@@ -93,6 +93,28 @@ interface EVT is NRC7 {
 ```
 
 `_propertyID` is calculated by `bytes32(keccak256('propertyName'))`  . 
+
+
+
+**Encryption Interfaces**
+
+
+
+```solidity
+interface EVTEncryption {
+
+	function encrypt(uint256 _tokenId, bytes32 _encryptedKeyID, bytes _encryptedKeyValue) external payable;
+	
+	function addPermission(uint256 _tokenId, bytes32 _encryptedKeyID, address _owner, uint256 expiredTime) external payable returns(bool);
+	
+	function removePermission(uint256 _tokenId, bytes32 _encryptedKeyID, address _owner) external returns (bool);
+
+  function hasPermission(uint256 _tokenId, bytes32 _encryptedKeyID, address _owner) external view returns (bool);
+
+  function getEncryptedKeyValue(uint256 _tokenId, bytes32 _encryptedKeyID) external view returns (bytes);
+}
+```
+
 
 
 
@@ -134,7 +156,7 @@ contract ODI is EVT {
 	}
 	
 	function tokenURI(uint256 tokenId) override public view returns (string memory) {
-  	string memory json = Base64.encode(bytes(string(abi.encodePacked('{"avatar3D": "...", ..."}'))));
+  	string memory json = Base64.encode(bytes(string(abi.encodePacked('{"avatar3D": "' + avatar3D + '", ..."}'))));
   	return string(abi.encodePacked('data:application/json;base64,', json));
 	}
 	
