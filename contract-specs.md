@@ -1,6 +1,6 @@
 ---
 eip: X
-title: Encryption and Evolution Token Proposal
+title: Encrypted Variable Token Proposal
 author: Newton Core Team
 type: Standards Track
 category: NRC
