@@ -103,15 +103,15 @@ interface EVTVariable {
 ```solidity
 interface EVTEncryption {
 
-	function encrypt(uint256 _tokenId, bytes32 _encryptedKeyID, bytes _encryptedKeyValue) external payable;
+	function encrypt(uint256 _tokenId, bytes32 _encryptedPropertyID, bytes _encryptedPropertyValue) external payable;
 	
-	function addPermission(uint256 _tokenId, bytes32 _encryptedKeyID, address _owner, uint256 expiredTime) external payable returns(bool);
+	function addPermission(uint256 _tokenId, bytes32 _encryptedPropertyID, address _owner, uint256 expiredTime) external payable returns(bool);
 	
-	function removePermission(uint256 _tokenId, bytes32 _encryptedKeyID, address _owner) external returns (bool);
+	function removePermission(uint256 _tokenId, bytes32 _encryptedPropertyID, address _owner) external returns (bool);
 
-  function hasPermission(uint256 _tokenId, bytes32 _encryptedKeyID, address _owner) external view returns (bool);
+  function hasPermission(uint256 _tokenId, bytes32 _encryptedPropertyID, address _owner) external view returns (bool);
 
-  function getEncryptedKeyValue(uint256 _tokenId, bytes32 _encryptedKeyID) external view returns (bytes);
+  function getEncryptedKeyValue(uint256 _tokenId, bytes32 _encryptedPropertyID) external view returns (bytes);
 }
 ```
 
@@ -135,8 +135,6 @@ interface EVTMetadata {
     function tokenURI(uint256 _tokenId) external view returns (string memory);
 		
     function from() external view returns (string);
-
-    function tax() external view returns (uint);    
 }
 ```
 
