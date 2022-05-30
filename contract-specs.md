@@ -69,7 +69,7 @@ This document aims to guide the EVT's integration and interoperationality with w
 
 EVT will inherit the interfaces of NRC7.
 
-The current implementation of EVT is based on solidity programming language. In Solidity, serialization and deserialization is not built-in. So in  implementation of EVT, protobuf3 is used for the serialization and deserialization of variable properties, 
+The current implementation of EVT is based on solidity programming language. In Solidity, serialization and deserialization is not built-in. So in  the implementation of EVT, protobuf3 can be used for the serialization and deserialization of variable properties, 
 
 
 
