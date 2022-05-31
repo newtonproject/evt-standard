@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 pragma solidity >=0.8.4 <0.9.0;
 
-import "./ProtobufLib.sol";
+import "./libraries/ProtobufLib.sol";
 
 contract TestFixture {
     // Functions are not pure so that we can measure gas
