@@ -27,9 +27,9 @@ interface IEVTVariable {
      *
      * - `tokenId` must exist.
      */
-	function getDynamicProperty(uint256 tokenId, bytes32 propertyId) external view returns (bytes memory propertyValue);
+	function getProperty(uint256 tokenId, bytes32 propertyId) external view returns (bytes memory propertyValue);
 
-    function getDynamicProperties(uint256 tokenId) external view returns (bytes memory message);
+    function getProperties(uint256 tokenId) external view returns (bytes memory message);
   
     /**
      * @dev Returns whether the `propertyId` exists.
