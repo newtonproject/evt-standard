@@ -29,3 +29,17 @@ Generator is for converting from protobuf file to solidity file. It is recommend
 ## Examples
 
 [Examples](examples)
+
+## Community demo
+
+### MetaMovie
+[Demo Preview](https://secure-movie.vercel.app/)
+
+### Infinity Flower
+
+[Demo Preview](https://infinity-flower-3d.vercel.app/)
+
+[Source Code](https://github.com/andverse-core/Infinity-Flower)
+
+
+
