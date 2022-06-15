@@ -29,7 +29,7 @@ function setBoolDynamicProperty(uint256 tokenId, string memory propertyName, boo
 function getBoolDynamicProperty(uint256 tokenId, string memory propertyName) external view returns (bool propertyValue);
 ```
 
-refer [lib/contracts/EVT/EVTEample.sol](lib/contracts/EVT/EVTEample.sol)
+refer [lib/contracts/EVT/EVTExample.sol](./lib/contracts/EVT/EVTExample.sol)
 
 ### 3. define your own tokenURI
 
@@ -37,7 +37,7 @@ There are many ways to customize your tokenURI, here are some of the common ones
 
 3.1. Base64
 
-import "Base64.sol" and custom your tokenURI, just like the `tokenURI` in [lib/contracts/EVT/EVTEample.sol](lib/contracts/EVT/EVTEample.sol)
+import "Base64.sol" and custom your tokenURI, just like the `tokenURI` in [lib/contracts/EVT/EVTExample.sol](./lib/contracts/EVT/EVTExample.sol)
 
 3.2. updateTokenURI
 
