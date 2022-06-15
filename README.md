@@ -31,6 +31,9 @@ Generator is for converting from protobuf file to solidity file. It is recommend
 [Generator Utility](generator)
 
 
+## Tutorials
+[How to create EVT](how-to-create-evt.md)
+
 
 ## Examples
 
